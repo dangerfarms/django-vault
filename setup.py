@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='django-vault',
+    name='dj-vault',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -37,7 +37,7 @@ setup(
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Secrets',
+        'Framework :: Django',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
