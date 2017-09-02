@@ -2,9 +2,6 @@ import os
 
 import hvac
 
-client = hvac.Client(url='http://vault:8200', token=os.environ['VAULT_TOKEN'])
-
-
 # options = {
 #     'path': '/tmp/vault.log',
 # }
@@ -31,15 +28,16 @@ class VaultSecretsClient(object):
     >>> secrets.all
 
     """
-    def __init__(self, namespace):
+    def __init__(self, namespace, hostname='vault', token=None):
         self.__dict__['namespace'] = namespace
+        self.__dict__['client'] = hvac.Client(url='http://{}:8200'.format(hostname), token=token)
 
     def __getattr__(self, item):
         if item in self.__dict__:
             return self.__dict__[item]
 
         key = '{}/{}'.format(self.namespace, item)
-        return client.read(key)['data']['value']
+        return self.client.read(key)['data']['value']
 
     def __setattr__(self, key, value):
         if key in self.__dict__:
@@ -47,18 +45,18 @@ class VaultSecretsClient(object):
             return
 
         key = '{}/{}'.format(self.namespace, key)
-        return client.write(key, value=value)
+        return self.client.write(key, value=value)
 
     def __delattr__(self, item):
         if item in self.__dict__:
             return
 
         key = '{}/{}'.format(self.namespace, item)
-        return client.delete(key)
+        return self.client.delete(key)
 
     @property
     def keys(self):
-        resp = client.list(self.namespace)
+        resp = self.client.list(self.namespace)
         if resp:
             return resp['data']['keys']
 
