@@ -17,7 +17,7 @@ class VaultSecretsClient(object):
 
     Usage:
 
-    >>> secrets = VaultSecretsClient('secrets')
+    >>> secrets = VaultSecretsClient('secrets', 'hostname', 'token')
     >>> secrets.all
     >>> secrets.DJANGO_SECRET_KEY = 'secret'
     >>> secrets.DJANGO_SECRET_KEY
